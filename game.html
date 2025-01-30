@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -17,5 +17,129 @@
         <button type="submit">Trade</button>
     </form>
     <a href="{{ url_for('home') }}">Home</a>
+</body>
+</html>
+ -->
+
+
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trading Game</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      width: 80%;
+      max-width: 600px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    .market, .wallet {
+      margin-bottom: 20px;
+    }
+
+    button {
+      padding: 10px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background-color: #218838;
+    }
+
+    #message {
+      text-align: center;
+      font-weight: bold;
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Trading Game</h1>
+    <div class="market">
+      <h2>Market</h2>
+      <p>Price of Asset: <span id="price">$100</span></p>
+      <button id="buyButton">Buy</button>
+      <button id="sellButton">Sell</button>
+    </div>
+
+    <div class="wallet">
+      <h2>Your Wallet</h2>
+      <p>Cash: $<span id="cash">1000</span></p>
+      <p>Assets: <span id="assets">0</span></p>
+    </div>
+
+    <div id="message"></div>
+  </div>
+
+  <script>
+    let cash = 1000;
+    let assets = 0;
+    let price = 100;
+
+    const buyButton = document.getElementById("buyButton");
+    const sellButton = document.getElementById("sellButton");
+    const cashElement = document.getElementById("cash");
+    const assetsElement = document.getElementById("assets");
+    const priceElement = document.getElementById("price");
+    const messageElement = document.getElementById("message");
+
+    buyButton.addEventListener("click", () => {
+      if (cash >= price) {
+        cash -= price;
+        assets += 1;
+        updateGame();
+        messageElement.textContent = "You bought an asset!";
+      } else {
+        messageElement.textContent = "Not enough cash!";
+      }
+    });
+
+    sellButton.addEventListener("click", () => {
+      if (assets > 0) {
+        cash += price;
+        assets -= 1;
+        updateGame();
+        messageElement.textContent = "You sold an asset!";
+      } else {
+        messageElement.textContent = "No assets to sell!";
+      }
+    });
+
+    // Update game display
+    function updateGame() {
+      cashElement.textContent = cash;
+      assetsElement.textContent = assets;
+      priceElement.textContent = `$${price}`;
+    }
+
+    // Random price fluctuations every 5 seconds
+    setInterval(() => {
+      price = Math.floor(Math.random() * 200) + 50; // Price between $50 and $250
+      updateGame();
+    }, 5000);
+  </script>
 </body>
 </html>
