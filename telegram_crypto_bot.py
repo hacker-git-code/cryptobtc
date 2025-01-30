@@ -2,18 +2,18 @@ import asyncio
 import logging
 from aiogram import Bot, Dispatcher, types
 from aiogram.types import Message
-from aiogram.utils import executor
+from aiogram.filters import Command
 import sqlite3
 import random
 
-API_TOKEN = "7862150347:AAGrXZfQ-uGaVeQriABQ2OxuvApz9VBhio4s"
+API_TOKEN = "7862150347:AAGrXZfQ-uGaVeQriABQ2OxuvApz9VBhio4"
 
 # Logging setup
 logging.basicConfig(level=logging.INFO)
 
 # Initialize bot and dispatcher
 bot = Bot(token=API_TOKEN)
-dp = Dispatcher(bot)
+dp = Dispatcher()
 
 # Database setup
 conn = sqlite3.connect("crypto_game.db")
@@ -21,7 +21,7 @@ cursor = conn.cursor()
 cursor.execute('''CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, balance INTEGER)''')
 conn.commit()
 
-@dp.message_handler(commands=['start'])
+@dp.message(Command('start'))
 async def start_game(message: Message):
     user_id = message.from_user.id
     cursor.execute("SELECT * FROM users WHERE id=?", (user_id,))
@@ -34,7 +34,7 @@ async def start_game(message: Message):
     else:
         await message.reply("You're already registered! Use /balance to check your coins.")
 
-@dp.message_handler(commands=['balance'])
+@dp.message(Command('balance'))
 async def check_balance(message: Message):
     user_id = message.from_user.id
     cursor.execute("SELECT balance FROM users WHERE id=?", (user_id,))
@@ -45,7 +45,7 @@ async def check_balance(message: Message):
     else:
         await message.reply("You're not registered yet. Use /start to join the game.")
 
-@dp.message_handler(commands=['trade'])
+@dp.message(Command('trade'))
 async def trade_crypto(message: Message):
     user_id = message.from_user.id
     cursor.execute("SELECT balance FROM users WHERE id=?", (user_id,))
@@ -65,5 +65,9 @@ async def trade_crypto(message: Message):
     else:
         await message.reply(f"You lost {-trade_amount} coins! New balance: {new_balance}")
 
+# Start polling the bot
+async def main():
+    await dp.start_polling(bot)
+
 if __name__ == '__main__':
-    executor.start_polling(dp, skip_updates=True)
+    asyncio.run(main())
