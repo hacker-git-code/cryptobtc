@@ -22,7 +22,7 @@
  -->
 
 
-<!--  <!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -143,93 +143,6 @@
   </script>
 </body>
 </html>
- -->
 
 
- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Telegram Bot Web App</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #f4f4f4;
-            padding: 20px;
-        }
-        .container {
-            max-width: 500px;
-            margin: auto;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-        }
-        input, button {
-            width: 100%;
-            padding: 10px;
-            margin-top: 10px;
-        }
-        #messages {
-            margin-top: 20px;
-            text-align: left;
-        }
-        .msg {
-            background: #e1ffc7;
-            padding: 10px;
-            border-radius: 5px;
-            margin-top: 5px;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h2>Telegram Bot Web App</h2>
-        
-        <!-- Telegram Login Button -->
-        <script async src="https://telegram.org/js/telegram-widget.js?7" 
-            data-telegram-login="YOUR_BOT_USERNAME" 
-            data-size="large" 
-            data-userpic="false" 
-            data-auth-url="https://your-backend.com/auth"
-            data-request-access="write"></script>
-        
-        <h3>Chat with Bot</h3>
-        <input type="text" id="userMessage" placeholder="Type your message..." />
-        <button onclick="sendMessage()">Send</button>
 
-        <div id="messages"></div>
-    </div>
-
-    <script>
-        const BOT_TOKEN = "YOUR_BOT_TOKEN"; 
-        const CHAT_ID = "YOUR_CHAT_ID"; // Replace with your chat ID
-
-        function sendMessage() {
-            const message = document.getElementById("userMessage").value;
-            if (!message) return alert("Enter a message!");
-            
-            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    chat_id: CHAT_ID,
-                    text: message
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.ok) {
-                    document.getElementById("messages").innerHTML += 
-                        `<div class="msg">You: ${message}</div>`;
-                } else {
-                    alert("Error sending message!");
-                }
-            })
-            .catch(err => console.error(err));
-        }
-    </script>
-</body>
-</html>
